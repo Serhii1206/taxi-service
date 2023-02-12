@@ -2,6 +2,8 @@ package taxi.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import taxi.dao.CarDao;
 import taxi.lib.Inject;
 import taxi.lib.Service;
@@ -10,6 +12,8 @@ import taxi.model.Driver;
 
 @Service
 public class CarServiceImpl implements CarService {
+    private static final Logger logger = LogManager.getLogger(CarServiceImpl.class);
+
     @Inject
     private CarDao carDao;
 
@@ -38,7 +42,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car get(Long id) {
         return carDao.get(id).orElseThrow(() ->
-            new NoSuchElementException("Can't get car by id: " + id)
+                new NoSuchElementException("Can't get car by id: " + id)
         );
     }
 
