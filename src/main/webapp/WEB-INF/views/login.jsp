@@ -8,7 +8,7 @@
   <title>Login</title>
 </head>
 <body>
-<h4 style="color: red">${errorMsg}</h4>
+<h4 style="color: #de1010">${errorMsg}</h4>
 <form method="post" id="login" action="${pageContext.request.contextPath}/login"></form>
 <h1 class="table_dark">Login page</h1>
 <table border="1" class="table_dark">

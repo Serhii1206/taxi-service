@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import taxi.exception.DataProcessingException;
 import taxi.lib.Dao;
 import taxi.model.Driver;
@@ -15,8 +17,11 @@ import taxi.util.ConnectionUtil;
 
 @Dao
 public class DriverDaoImpl implements DriverDao {
+    private static final Logger logger = LogManager.getLogger(DriverDaoImpl.class);
+
     @Override
     public Driver create(Driver driver) {
+        logger.info("Method create was called with driver " + driver);
         String query = "INSERT INTO drivers (name, license_number, login, password) "
                 + "VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -39,6 +44,7 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public Optional<Driver> get(Long id) {
+        logger.info("Method get was called with id " + id);
         String query = "SELECT * FROM drivers WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
@@ -72,6 +78,7 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public Driver update(Driver driver) {
+        logger.info("Method update was called with driver: " + driver);
         String query = "UPDATE drivers "
                 + "SET name = ?, license_number = ?, login = ?, password = ? "
                 + "WHERE id = ? AND is_deleted = FALSE";
@@ -84,6 +91,7 @@ public class DriverDaoImpl implements DriverDao {
             statement.setString(4, driver.getPassword());
             statement.setLong(5, driver.getId());
             statement.executeUpdate();
+            logger.info("Update data of driver was successful");
             return driver;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update driver" + driver, e);
@@ -92,6 +100,7 @@ public class DriverDaoImpl implements DriverDao {
 
     @Override
     public boolean delete(Long id) {
+        logger.info("Method delete was called with id: " + id);
         String query = "UPDATE drivers SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {

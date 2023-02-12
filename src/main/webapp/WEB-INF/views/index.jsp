@@ -37,6 +37,9 @@
     <tr>
         <td><a href="${pageContext.request.contextPath}/cars/drivers/add">Add Driver to Car</a></td>
     </tr>
+    <tr>
+        <td><a href="${pageContext.request.contextPath}/logout">Log out</a></td>
+    </tr>
 </table>
 </body>
 </html>

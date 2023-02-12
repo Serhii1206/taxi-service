@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import taxi.exception.DataProcessingException;
 import taxi.lib.Dao;
 import taxi.model.Car;
@@ -17,8 +19,11 @@ import taxi.util.ConnectionUtil;
 
 @Dao
 public class CarDaoImpl implements CarDao {
+    private static final Logger logger = LogManager.getLogger(CarDaoImpl.class);
+
     @Override
     public Car create(Car car) {
+        logger.info("Method create was called with car " + car);
         String query = "INSERT INTO cars (model, manufacturer_id)"
                 + "VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -41,6 +46,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public Optional<Car> get(Long id) {
+        logger.info("Method get was called with id " + id);
         String query = "SELECT c.id AS id, "
                 + "model, "
                 + "manufacturer_id, "
@@ -89,11 +95,13 @@ public class CarDaoImpl implements CarDao {
             throw new DataProcessingException("Can't get all cars", e);
         }
         cars.forEach(car -> car.setDrivers(getAllDriversByCarId(car.getId())));
+        logger.info("The all data from DB was successful fetched");
         return cars;
     }
 
     @Override
     public Car update(Car car) {
+        logger.info("Method update was called with car: " + car);
         String query = "UPDATE cars SET model = ?, manufacturer_id = ? WHERE id = ?"
                 + " AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -108,16 +116,18 @@ public class CarDaoImpl implements CarDao {
         }
         deleteAllDrivers(car);
         insertAllDrivers(car);
+        logger.info("Update data of car was successful");
         return car;
     }
 
     @Override
     public boolean delete(Long id) {
+        logger.info("Method delete was called with id: " + id);
         String query = "UPDATE cars SET is_deleted = TRUE WHERE id = ?"
                 + " AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement statement =
-                         connection.prepareStatement(query)) {
+                PreparedStatement statement =
+                        connection.prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -127,6 +137,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> getAllByDriver(Long driverId) {
+        logger.info("Method getAllByDriver was called with id: " + driverId);
         String query = "SELECT c.id AS id, "
                 + "model, "
                 + "manufacturer_id, "
@@ -149,9 +160,11 @@ public class CarDaoImpl implements CarDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all cars for driver with id: "
-                + driverId, e);
+                    + driverId, e);
         }
         cars.forEach(car -> car.setDrivers(getAllDriversByCarId(car.getId())));
+        logger.info("The all data about cars by driver id " + driverId
+                + " was successful fetched from DB");
         return cars;
     }
 
@@ -183,11 +196,12 @@ public class CarDaoImpl implements CarDao {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete drivers " + car.getDrivers()
-                + " of car with id: " + car.getId(), e);
+                    + " of car with id: " + car.getId(), e);
         }
     }
 
     private List<Driver> getAllDriversByCarId(Long carId) {
+
         String query = "SELECT id, name, license_number, login, password "
                 + "FROM cars_drivers cd "
                 + "JOIN drivers d ON cd.driver_id = d.id "
