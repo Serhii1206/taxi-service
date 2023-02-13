@@ -1,14 +1,13 @@
-                                                             🚖 TAXI-SERVICE 🚖
+# 🚖 TAXI-SERVICE 🚖
 
+ 
 
-
-           👀  Description:
+👀  `Description:`
 
 **A simple web-application that supports authentication, registration and CRUD operations with all entities.**
 
 
-
-           📌  Features:
+`📌  Features:`
 
 * registration as a driver;
 * authentication as a driver;
@@ -22,44 +21,34 @@
 * add driver to car.
 
 
+`📐 Architecture`
 
-    Project structure (3-layer architecture):
+`Project structure (3-layer architecture):`
 
 * DAO - Data access layer
 * Service - Application logic layer
 * Controllers - Presentation layer
 
 
- 
 
-          📝  Used technologies and libraries:
+`📝  Used technologies and libraries:`
 
-Java 19
+* Java 19
+* Git
+* Apache Maven
+* Apache Tomcat
+* MySQL
+* JDBC
+* Javax Servlet
+* JSP
+* JSTL
+* HTML/CSS
+* Log4j
+* Checkstyle plugin
 
-Git
 
-Apache Maven
 
-Apache Tomcat
-
-MySQL
-
-JDBC
-
-Javax Servlet
-
-JSP
-
-JSTL
-
-HTML/CSS
-
-log4j
-
-Checkstyle plugin
-
-             🔎  Steps to run the app:
-
+`💻  Steps to run the app:`
 
 * Clone [this](https://github.com/Serhii1206/taxi-service.git) repo;
 * Install MySQL;
@@ -67,4 +56,4 @@ Checkstyle plugin
 * Copy and run SQL script /src/main/resources/init_db.sql to creating a schema and tables for the project;
 * Configure /src/main/java/taxi/util/ConnectionUtil.java with your URL, USERNAME, PASSWORD, JDBC_DRIVER;
 
-             🚀  Run and use application!   
+`🚀  Run and use application!  ` 
